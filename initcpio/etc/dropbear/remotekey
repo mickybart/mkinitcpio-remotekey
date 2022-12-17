@@ -1,0 +1,8 @@
+# Server IP with keyfiles storage
+KEY_IP=
+
+# ssh user on the server
+KEY_USER=keys
+
+# keyfile path (if used, / will be the chroot directory)
+KEY_FILE=/keyfiles/cryptroot.key

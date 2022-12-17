@@ -1,0 +1,49 @@
+#!/usr/bin/ash
+
+# Copyright 2022 mickybart
+
+# This file is part of mkinitcpio-remotekey.
+
+# mkinitcpio-remotekey is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# mkinitcpio-remotekey is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+
+# You should have received a copy of the GNU Lesser General Public License
+# along with mkinitcpio-remotekey.  If not, see <https://www.gnu.org/licenses/>.
+
+run_hook ()
+{
+    HOME=/root
+
+    source /etc/dropbear/remotekey
+
+    # compatibility with encrypt and encryptssh
+    ckeyfile="/crypto_keyfile.bin"
+
+    msg "Waiting a remote keyfile ..." >&2
+    sftp -q -S dbclient keys@${KEY_IP}:${KEY_FILE} ${ckeyfile} 2>/dev/null
+    RET=$?
+    if [ $RET -eq 0 ]; then
+        msg "keyfile downloaded."
+        chmod 600 ${ckeyfile}
+    elif [ $RET -eq 255 ]; then
+        msg "Network issue to connect to your remote keyfile server." >&2
+    elif [ $RET -eq 1 ]; then
+        msg "Keyfile not found on the server." >&2
+    else
+        msg "Unexpected error [$REST]." >&2
+    fi
+
+    return $RET
+}
+
+run_cleanuphook ()
+{
+    rm -f "/root/.ssh/id_dropbear"
+}
