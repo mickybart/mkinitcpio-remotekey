@@ -12,17 +12,17 @@ optdepends=('mkinitcpio-netconf: Network interface configuration')
 source=("${pkgname}-${pkgver}.tar.gz::$url/archive/v$pkgver.tar.gz"
         "${pkgname}-${pkgver}.tar.gz.sig::$url/releases/download/v$pkgver/v$pkgver.tar.gz.sig")
 changelog='ChangeLog'
-sha512sums=('0047411c5c8d26ae5b0606820cb50eafe1efe4b00e634e87085017f6433ac9a3e62b994949db8817e8cc8d619f93549da8f68b9b13a4293139653f7c68b759f8'
+sha512sums=('6e33772fe95ed8d63e4e2846e849115d10ac28b8d2517499dfba799cf8fff35a1048ae9e85c3d2dfa5fb016f65dc1d2d7b202c6561bb208e216035a4c2bbc35e'
             'SKIP')
 backup=('etc/dropbear/id_remotekey' 'etc/dropbear/remotekey')
 validpgpkeys=('B026EDFDDDEBC59E3F60966AF9E8AF21879815B6')
 
 package() {
-  install -Dm644 "$srcdir/hooks/remotekey"     "$pkgdir/usr/lib/initcpio/hooks/remotekey"
-  install -Dm644 "$srcdir/install/remotekey"   "$pkgdir/usr/lib/initcpio/install/remotekey"
-  install -Dm600 "$srcdir/etc/dropbear/id_remotekey"  "$pkgdir/etc/dropbear/id_remotekey"
-  install -Dm600 "$srcdir/etc/dropbear/remotekey"     "$pkgdir/etc/dropbear/remotekey"
+  install -Dm644 "$srcdir/${pkgname}-${pkgver}/initcpio/hooks/remotekey"     "$pkgdir/usr/lib/initcpio/hooks/remotekey"
+  install -Dm644 "$srcdir/${pkgname}-${pkgver}/initcpio/install/remotekey"   "$pkgdir/usr/lib/initcpio/install/remotekey"
+  install -Dm600 "$srcdir/${pkgname}-${pkgver}/initcpio/etc/dropbear/id_remotekey"  "$pkgdir/etc/dropbear/id_remotekey"
+  install -Dm600 "$srcdir/${pkgname}-${pkgver}/initcpio/etc/dropbear/remotekey"     "$pkgdir/etc/dropbear/remotekey"
 
-  install -Dm644 "$srcdir/COPYING" \
+  install -Dm644 "$srcdir/${pkgname}-${pkgver}/COPYING" \
     "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }
